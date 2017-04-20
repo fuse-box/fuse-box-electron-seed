@@ -15,6 +15,7 @@ dist/
 # Coverage directory used by tools like istanbul
 coverage
 
+.fusebox
 # nyc test coverage
 .nyc_output
 
