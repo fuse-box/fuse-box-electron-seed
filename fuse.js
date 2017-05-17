@@ -5,11 +5,11 @@ const {
     Sparky
 } = require("fuse-box");
 
-const { spawn } = require("child_process");
+const {spawn} = require("child_process");
 
 
 Sparky.task("copy-html", () => {
-    return Sparky.src("src/index.html").dest("dist/$name")
+    return Sparky.src("src/index.html").dest("dist/$name");
 });
 
 Sparky.task("default", ["copy-html"], () => {
@@ -18,16 +18,16 @@ Sparky.task("default", ["copy-html"], () => {
         output: "dist/$name.js"
     });
     // development server for hot reload
-    fuse.dev({ port: 4445, httpServer: false });
+    fuse.dev({port: 4445, httpServer: false});
 
     fuse.bundle("app")
         .target("electron")
-        .plugin(SassPlugin(), CSSPlugin({ group: "bundle.css" }))
+        .plugin(SassPlugin(), CSSPlugin({group: "bundle.css"}))
         .watch()
         .hmr()
         .instructions(" > [index.ts]"); // it's import to isolate like this []
     return fuse.run().then(() => {
         // launch the app
-        spawn(`${__dirname}/node_modules/electron/cli.js`, [__dirname])
-    })
+        spawn('node', [`${ __dirname }/node_modules/electron/cli.js`,  __dirname ]);
+    });
 });
