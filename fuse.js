@@ -20,6 +20,11 @@ Sparky.task("default", ["copy-html"], () => {
     // development server for hot reload
     fuse.dev({port: 4445, httpServer: false});
 
+    fuse.bundle("electron")
+        .target("electron")
+        .watch()
+        .instructions(" > [electron.ts]"); // it's import to isolate like this []
+
     fuse.bundle("app")
         .target("electron")
         .plugin(SassPlugin(), CSSPlugin({group: "bundle.css"}))
