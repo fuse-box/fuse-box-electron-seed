@@ -2,7 +2,7 @@
     "name": "fuse-box-electron-seed",
     "version": "1.0.0",
     "description": "",
-    "main": "electron.js",
+    "main": "dist/electron.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node fuse"
