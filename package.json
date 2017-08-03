@@ -5,7 +5,9 @@
     "main": "electron.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node fuse"
+        "start": "export NODE_ENV=development && node fuse",
+        "dist": "export NODE_ENV=production && node fuse dist",
+        "prod": "export NODE_ENV=production && npm run dist && electron electron.js"
     },
     "repository": {
         "type": "git",
@@ -19,8 +21,10 @@
     "homepage": "https://github.com/fuse-box/fuse-box-electron-seed#readme",
     "devDependencies": {
         "electron": "^1.6.5",
+        "express": "^4.15.3",
         "fuse-box": "^2.0.0",
         "node-sass": "^4.5.2",
-        "typescript": "^2.2.2"
+        "typescript": "^2.2.2",
+        "uglify-js": "^3.0.27"
     }
 }
