@@ -1,40 +1,89 @@
+
 const {
     FuseBox,
     SassPlugin,
     CSSPlugin,
     WebIndexPlugin,
-    Sparky
+    Sparky,
+    UglifyJSPlugin,
+    QuantumPlugin,
+    EnvPlugin
 } = require("fuse-box");
 
+QuantumPlugin({
+    target : 'universal',
+    // treeshake: true,
+    // removeExportsInterop: false,
+    uglify: true
+})
+
+const express = require("express");
+const path = require("path");
 const {spawn} = require("child_process");
 
-Sparky.task("clean", () => Sparky.src("dist/").clean("dist/"));
-Sparky.task("clean-fusecache", () => Sparky.src(".fusebox/").clean(".fusebox/"));
+let producer;
+let production = false;
 
-Sparky.task("default", ["clean", "clean-fusecache"], () => {
-    const fuse = new FuseBox({
+Sparky.task("build", () => {
+    const fuse = FuseBox.init({
         homeDir: "src",
-        output: "dist/$name.js",
+        output: "dist/static/$name.js",
+        hash: production,
+        target: "electron",
+        experimentalFeatures: true,
+        cache: !production,
         plugins: [
+            EnvPlugin({ NODE_ENV: production ? "production" : "development" }),
             [SassPlugin(), CSSPlugin()],
             WebIndexPlugin({
-                template: "src/index.html"
+                title: "FuseBox electron demo",
+                template: "src/index.html",
+                path: "./"
             }),
+            // production && QuantumPlugin({
+            //     target : 'electron',
+            //     treeshake: true,
+            //     removeExportsInterop: false,
+            //     uglify: true
+            // })
         ]
     });
-    // development server for hot reload
-    fuse.dev({port: 4445});
 
-    // vendor = fuse.bundle("vendor").instructions("~ index.ts - fs - path")
+    if (!production) {
+        // Configure development server
+        fuse.dev({ root: false }, server => {
+            const dist = path.join(__dirname, "dist");
+            const app = server.httpServer.app;
+            app.use("/static/", express.static(path.join(dist, 'static')));
+            app.get("*", function(req, res) {
+                res.sendFile(path.join(dist, "static/index.html"));
+            });
+        })
+    }
 
-    fuse.bundle("app")
-        .target("electron")
-        .watch()
-        .hmr()
-        .instructions("> [index.ts] + fuse-box-css"); // it's import to isolate like this []
-    
-    return fuse.run().then(() => {
-        // launch the app
-        spawn('node', [`${ __dirname }/node_modules/electron/cli.js`,  __dirname ]);
-    });
+    const app = fuse.bundle("app")
+        .instructions('> [index.ts] + fuse-box-css')
+
+    if (!production) { 
+        app.hmr().watch()
+
+        return fuse.run().then(() => {
+            // launch electron the app
+            spawn('node', [`${ __dirname }/node_modules/electron/cli.js`,  __dirname ]);
+        });
+    }
+
+    return fuse.run()
 });
+
+// main task
+Sparky.task("default", ["clean", "build"], () => {});
+
+// wipe it all
+Sparky.task("clean", () => Sparky.src("dist/*").clean("dist/"));
+// wipe it all from .fusebox - cache dir
+Sparky.task("clean-cache", () => Sparky.src(".fusebox/*").clean(".fusebox/"));
+
+// prod build
+Sparky.task("set-production-env", () => production = true);
+Sparky.task("dist", ["clean", "clean-cache", "set-production-env", "build"], () => {})
