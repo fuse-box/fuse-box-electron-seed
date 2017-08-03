@@ -40,12 +40,12 @@ Sparky.task("build", () => {
                 template: "src/index.html",
                 path: "./"
             }),
-            // production && QuantumPlugin({
-            //     target : 'electron',
-            //     treeshake: true,
-            //     removeExportsInterop: false,
-            //     uglify: true
-            // })
+            production && QuantumPlugin({
+                target : 'server',
+                treeshake: true,
+                removeExportsInterop: false,
+                uglify: true
+            })
         ]
     });
 
