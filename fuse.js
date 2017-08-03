@@ -1,4 +1,3 @@
-
 const {
     FuseBox,
     SassPlugin,
@@ -9,13 +8,6 @@ const {
     QuantumPlugin,
     EnvPlugin
 } = require("fuse-box");
-
-QuantumPlugin({
-    target : 'universal',
-    // treeshake: true,
-    // removeExportsInterop: false,
-    uglify: true
-})
 
 const express = require("express");
 const path = require("path");
@@ -40,13 +32,14 @@ Sparky.task("build", () => {
                 template: "src/index.html",
                 path: production ? "." : "/static/"
             }),
-            production && QuantumPlugin({
-                bakeApiIntoBundle : 'app',
-                target : 'server',
-                // treeshake: true,
-                // removeExportsInterop: false,
-                // uglify: true
-            })
+            // QuantumPlugin will work after it will be compatible with electron
+            // production && QuantumPlugin({
+            //     bakeApiIntoBundle : 'app',
+            //     target : 'server',
+            //     treeshake: true,
+            //     removeExportsInterop: false,
+            //     uglify: true
+            // })
         ]
     });
 
