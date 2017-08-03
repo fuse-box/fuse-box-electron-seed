@@ -8,7 +8,10 @@ const {
 
 const {spawn} = require("child_process");
 
-Sparky.task("default", () => {
+Sparky.task("clean", () => Sparky.src("dist/").clean("dist/"));
+Sparky.task("clean-fusecache", () => Sparky.src(".fusebox/").clean(".fusebox/"));
+
+Sparky.task("default", ["clean", "clean-fusecache"], () => {
     const fuse = new FuseBox({
         homeDir: "src",
         output: "dist/$name.js",
