@@ -38,13 +38,14 @@ Sparky.task("build", () => {
             WebIndexPlugin({
                 title: "FuseBox electron demo",
                 template: "src/index.html",
-                path: "./"
+                path: production ? "." : "/static/"
             }),
             production && QuantumPlugin({
+                bakeApiIntoBundle : 'app',
                 target : 'server',
-                treeshake: true,
-                removeExportsInterop: false,
-                uglify: true
+                // treeshake: true,
+                // removeExportsInterop: false,
+                // uglify: true
             })
         ]
     });
