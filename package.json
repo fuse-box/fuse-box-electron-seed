@@ -20,11 +20,11 @@
     },
     "homepage": "https://github.com/fuse-box/fuse-box-electron-seed#readme",
     "devDependencies": {
-        "electron": "^1.6.5",
+        "electron": "^1.7.5",
         "express": "^4.15.3",
-        "fuse-box": "^2.2.2-beta.7",
+        "fuse-box": "^2.2.1",
         "node-sass": "^4.5.2",
-        "typescript": "^2.2.2",
+        "typescript": "^2.4.2",
         "uglify-js": "^3.0.27"
     }
 }
