@@ -1,3 +1,6 @@
+const env = process.env.NODE_ENV || 'production';
+const dev = env === 'development';
+
 const electron = require('electron')
     // Module to control application life.
 
@@ -16,15 +19,19 @@ function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({ width: 800, height: 600 })
 
-    // and load the index.html of the app.
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'dist/index.html'),
-        protocol: 'file:',
-        slashes: true
-    }))
-
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
+    if(dev) {
+        mainWindow.loadURL('http://localhost:4444')
+        // and load the index.html of the app.
+    
+        // Open the DevTools.
+        // mainWindow.webContents.openDevTools()
+    } else {
+        mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'dist/static/index.html'),
+            protocol: 'file:',
+            slashes: true
+        }))
+    }
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {

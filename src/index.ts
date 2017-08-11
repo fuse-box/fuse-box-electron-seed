@@ -6,9 +6,13 @@ import "./bar.scss";
 
 
 const myPackage = fs.readFileSync(path.resolve("./package.json")).toString();
-
+const versions = `
+node: ${process.versions.node}
+chrome: ${process.versions.chrome}
+electron: ${process.versions.electron}
+`
 
 const test = document.querySelector("#test")
-test.innerHTML = myPackage;
+test.innerHTML = myPackage + versions;
 
 
