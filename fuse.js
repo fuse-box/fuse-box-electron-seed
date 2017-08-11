@@ -32,14 +32,13 @@ Sparky.task("build", () => {
                 template: "src/index.html",
                 path: production ? "." : "/static/"
             }),
-            // QuantumPlugin will work after it will be compatible with electron
-            // production && QuantumPlugin({
-            //     bakeApiIntoBundle : 'app',
-            //     target : 'server',
-            //     treeshake: true,
-            //     removeExportsInterop: false,
-            //     uglify: true
-            // })
+            production && QuantumPlugin({
+                bakeApiIntoBundle : 'app',
+                target : 'electron',
+                treeshake: true,
+                removeExportsInterop: false,
+                uglify: true
+            })
         ]
     });
 

@@ -1,6 +1,6 @@
 # fuse-box-electron-seed
 
-This version works with `FuseBox 2.2.1` `Electron 1.7.5`
+This version works with `FuseBox 2.2.2-beta.12` `Electron 1.7.5`
 
 What's inside:
 
