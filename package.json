@@ -1,13 +1,26 @@
 {
     "name": "fuse-box-electron-seed",
+    "productName": "ElectronFusebox",
     "version": "1.0.0",
-    "description": "",
+    "description": "Electron application boilerplate based on typescript fusebox with hot reloading",
     "main": "electron.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node fuse",
-        "dist": "export NODE_ENV=production && node fuse dist",
-        "prod": "export NODE_ENV=production && npm run dist && electron ."
+        "build": "export NODE_ENV=production && node fuse dist",
+        "prod": "export NODE_ENV=production && npm run build && electron .",
+        "packager": "npm run build && node ./package.js",
+        "package": "npm run build && build --publish never",
+        "package-all": "npm run build && build -mwl",
+        "package-linux": "npm run build && build --linux",
+        "package-win": "npm run build && build --win --x64"
+    },
+    "build": {
+        "compression": "maximum",
+        "asar": "false",
+        "directories": {
+            "output": "release"
+        }
     },
     "repository": {
         "type": "git",
@@ -21,6 +34,8 @@
     "homepage": "https://github.com/fuse-box/fuse-box-electron-seed#readme",
     "devDependencies": {
         "electron": "^1.7.5",
+        "electron-builder": "^19.27.3",
+        "electron-packager": "^9.0.1",
         "express": "^4.15.3",
         "fuse-box": "^2.2.2-beta.12",
         "node-sass": "^4.5.2",

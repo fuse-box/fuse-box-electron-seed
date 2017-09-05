@@ -19,7 +19,7 @@ let production = false;
 Sparky.task("build", () => {
     const fuse = FuseBox.init({
         homeDir: "src",
-        output: "dist/static/$name.js",
+        output: "app/static/$name.js",
         hash: production,
         target: "electron",
         experimentalFeatures: true,
@@ -45,7 +45,7 @@ Sparky.task("build", () => {
     if (!production) {
         // Configure development server
         fuse.dev({ root: false }, server => {
-            const dist = path.join(__dirname, "dist");
+            const dist = path.join(__dirname, "app");
             const app = server.httpServer.app;
             app.use("/static/", express.static(path.join(dist, 'static')));
             app.get("*", function(req, res) {

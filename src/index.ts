@@ -3,7 +3,9 @@ import * as path from "path";
 import "./foo.scss";
 import "./bar.scss";
 
+const test = document.querySelector("#test")
 
+test.innerHTML = 'loading file content from: ' + path.resolve("./package.json");
 
 const myPackage = fs.readFileSync(path.resolve("./package.json")).toString();
 const versions = `
@@ -12,7 +14,6 @@ chrome: ${process.versions.chrome}
 electron: ${process.versions.electron}
 `
 
-const test = document.querySelector("#test")
 test.innerHTML = myPackage + versions;
 
 
