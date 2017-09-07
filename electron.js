@@ -17,7 +17,11 @@ let mainWindow;
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 800, height: 600, icon: __dirname + '/src/icons/logo.png'})
+    mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        icon: path.join(__dirname, 'resources', 'icon.png')
+    })
 
     if(dev) {
         mainWindow.loadURL('http://localhost:4444')
@@ -27,7 +31,7 @@ function createWindow() {
         // mainWindow.webContents.openDevTools()
     } else {
         mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'app/static/index.html'),
+            pathname: path.join(__dirname, 'dist/static/index.html'),
             protocol: 'file:',
             slashes: true
         }))

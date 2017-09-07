@@ -19,7 +19,7 @@ let production = false;
 Sparky.task("build", () => {
     const fuse = FuseBox.init({
         homeDir: "src",
-        output: "app/static/$name.js",
+        output: "dist/static/$name.js",
         hash: production,
         target: "electron",
         experimentalFeatures: true,
@@ -33,7 +33,7 @@ Sparky.task("build", () => {
                 path: production ? "." : "/static/"
             }),
             production && QuantumPlugin({
-                bakeApiIntoBundle : 'app',
+                bakeApiIntoBundle : 'dist',
                 target : 'electron',
                 treeshake: true,
                 removeExportsInterop: false,
@@ -45,7 +45,7 @@ Sparky.task("build", () => {
     if (!production) {
         // Configure development server
         fuse.dev({ root: false }, server => {
-            const dist = path.join(__dirname, "app");
+            const dist = path.join(__dirname, "dist");
             const app = server.httpServer.app;
             app.use("/static/", express.static(path.join(dist, 'static')));
             app.get("*", function(req, res) {
@@ -54,7 +54,7 @@ Sparky.task("build", () => {
         })
     }
 
-    const app = fuse.bundle("app")
+    const app = fuse.bundle("dist")
         .instructions('> [index.ts] + fuse-box-css')
 
     if (!production) { 

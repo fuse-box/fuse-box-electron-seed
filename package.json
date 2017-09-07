@@ -1,6 +1,11 @@
 {
     "name": "fuse-box-electron-seed",
-    "productName": "ElectronFusebox",
+    "productName": "fuse-box-electron-example-app",
+    "author": {
+        "name": "FuseBoxDevs",
+        "email": "fuse@example.com",
+        "url": "https://github.com/fuse-box"
+    },
     "version": "1.0.0",
     "description": "Electron application boilerplate based on typescript fusebox with hot reloading",
     "main": "electron.js",
@@ -11,22 +16,55 @@
         "prod": "export NODE_ENV=production && npm run build && electron .",
         "packager": "npm run build && node ./package.js",
         "package": "npm run build && build --publish never",
+        "pack-and-publish": "npm run build && build --publish always",
         "package-all": "npm run build && build -mwl",
         "package-linux": "npm run build && build --linux",
         "package-win": "npm run build && build --win --x64"
     },
     "build": {
-        "compression": "maximum",
-        "asar": "false",
+        "productName": "ElectronReact",
+        "appId": "org.develar.ElectronReact",
+        "files": [
+          "dist/",
+          "node_modules/",
+          "resources/",
+          "electron.js",
+          "package.json"
+        ],
+        "dmg": {
+          "contents": [
+            {
+              "x": 130,
+              "y": 220
+            },
+            {
+              "x": 410,
+              "y": 220,
+              "type": "link",
+              "path": "/Applications"
+            }
+          ]
+        },
+        "win": {
+          "target": [
+            "nsis"
+          ]
+        },
+        "linux": {
+          "target": [
+            "deb",
+            "AppImage"
+          ]
+        },
         "directories": {
-            "output": "release"
+          "buildResources": "resources",
+          "output": "release"
         }
-    },
+      },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/fuse-box/fuse-box-electron-seed.git"
+        "url": "git+https://github.com/kfiku/fuse-box-electron-seed.git"
     },
-    "author": "",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/fuse-box/fuse-box-electron-seed/issues"
