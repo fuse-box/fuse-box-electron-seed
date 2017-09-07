@@ -37,16 +37,16 @@ function createWindow() {
         height: 600,
         icon: path.join(__dirname, 'resources', 'icon.png')
     })
-
+    console.log(app.getVersion());
     if(dev) {
-        mainWindow.loadURL('http://localhost:4444')
+        mainWindow.loadURL('http://localhost:4444#' + app.getVersion())
         // and load the index.html of the app.
     
         // Open the DevTools.
         // mainWindow.webContents.openDevTools()
     } else {
         mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'dist/static/index.html'),
+            pathname: path.join(__dirname, 'dist/static/index.html#' + app.getVersion()),
             protocol: 'file:',
             slashes: true
         }))

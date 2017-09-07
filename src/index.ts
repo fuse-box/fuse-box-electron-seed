@@ -13,7 +13,7 @@ chrome: ${process.versions.chrome}
 electron: ${process.versions.electron}
 `
 
-test.innerHTML += versions + '\n';
+test.innerHTML = versions + '\n';
 
 const myPackage = fs.readFileSync(path.resolve(__dirname, './package.json')).toString();
 test.innerHTML += myPackage;
