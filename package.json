@@ -6,7 +6,7 @@
     "email": "fuse@example.com",
     "url": "https://github.com/fuse-box"
   },
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Electron application boilerplate based on typescript fusebox with hot reloading",
   "main": "electron.js",
   "scripts": {
