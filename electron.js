@@ -12,6 +12,7 @@ const path = require('path')
 const url = require('url')
 const log = require('electron-log');
 const {autoUpdater} = require("electron-updater");
+const {dialog} = require('electron')
 
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
@@ -22,6 +23,7 @@ log.info('App starting...');
 let mainWindow;
 
 function sendStatusToWindow(text) {
+    dialog.showMessageBox({ message: text })
     console.log(text);
     log.info(text);
     mainWindow.webContents.send('message', text);
@@ -37,20 +39,25 @@ function createWindow() {
         height: 600,
         icon: path.join(__dirname, 'resources', 'icon.png')
     })
-    console.log(app.getVersion());
+    // console.log(app.getVersion());
     if(dev) {
-        mainWindow.loadURL('http://localhost:4444#' + app.getVersion())
+        mainWindow.loadURL('http://localhost:4444')
         // and load the index.html of the app.
     
         // Open the DevTools.
-        // mainWindow.webContents.openDevTools()
+        mainWindow.webContents.openDevTools()
     } else {
         mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'dist/static/index.html#' + app.getVersion()),
+            pathname: path.join(__dirname, 'dist/static/index.html'),
             protocol: 'file:',
             slashes: true
         }))
+        mainWindow.webContents.openDevTools()
     }
+
+    setTimeout(() => {
+        sendStatusToWindow('testing messages after 1000')
+    }, 1000)
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
@@ -98,6 +105,8 @@ autoUpdater.on('update-not-available', (info) => {
 })
 autoUpdater.on('error', (err) => {
     sendStatusToWindow('Error in auto-updater.');
+    console.log(err);
+    dialog.showMessageBox({ message: err.toString() })
 })
 autoUpdater.on('download-progress', (progressObj) => {
     let log_message = "Download speed: " + progressObj.bytesPerSecond;

@@ -15,8 +15,16 @@ electron: ${process.versions.electron}
 
 test.innerHTML = versions + '\n';
 
-const myPackage = fs.readFileSync(path.resolve(__dirname, './package.json')).toString();
-test.innerHTML += myPackage;
+const {ipcRenderer} = require('electron');
+ipcRenderer.on('message', function(event, text) {
+  var container = document.getElementById('messages');
+  var message = document.createElement('div');
+  message.innerHTML = text;
+  container.appendChild(message);
+})
+
+// const myPackage = fs.readFileSync(path.resolve(__dirname, './package.json')).toString();
+// test.innerHTML += myPackage;
 
 
 
