@@ -13,9 +13,9 @@ chrome: ${process.versions.chrome}
 electron: ${process.versions.electron}
 `
 
-test.innerHTML = versions + '\n';
+test.innerHTML += versions + '\n';
 
-const {ipcRenderer} = require('electron');
+const {ipcRenderer, remote} = require('electron');
 ipcRenderer.on('message', function(event, text) {
   var container = document.getElementById('messages');
   var message = document.createElement('div');
@@ -23,8 +23,11 @@ ipcRenderer.on('message', function(event, text) {
   container.appendChild(message);
 })
 
-// const myPackage = fs.readFileSync(path.resolve(__dirname, './package.json')).toString();
-// test.innerHTML += myPackage;
+const app = remote.app;
+const appDir = app.getAppPath();
+
+const myPackage = fs.readFileSync(appDir + '/package.json').toString();
+test.innerHTML += myPackage;
 
 
 
