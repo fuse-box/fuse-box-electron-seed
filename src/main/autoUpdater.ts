@@ -11,7 +11,7 @@ function sendStatusToWindow(text) {
     dialog.showMessageBox({ message: text })
     console.log(text);
     log.info(text);
-    mainWindow.webContents.send('message', text);
+    // mainWindow.webContents.send('message', text);
 }
 
 autoUpdater.on('checking-for-update', () => {

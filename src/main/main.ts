@@ -1,21 +1,17 @@
 const env = process.env.NODE_ENV || 'production';
 const dev = env === 'development';
 
-const isDevElectron = require('electron-is-dev');
-    // is dev electron (run from builderd)
-
-const autoUpdater = require('./src/mainProcess/autoUpdater')
-const electron = require('electron');
-    // Module to control application life.
-
-const app = electron.app;
-    // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow;
-const version = app.getVersion();
-
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
+const isDevElectron = require('electron-is-dev'); // is dev electron (run from builded version)
+const electron = require('electron'); // Module to control application life.
+
+// const autoUpdater = require('./autoUpdater') // comming soon
+
+const app = electron.app; // Module to create native browser window.
+const BrowserWindow = electron.BrowserWindow;
+const version = app.getVersion();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
