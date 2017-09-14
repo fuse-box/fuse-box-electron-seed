@@ -8,10 +8,11 @@
   },
   "version": "1.0.5",
   "description": "Electron application boilerplate based on typescript fusebox with hot reloading",
-  "main": "electron.js",
+  "main": "dist/renderer/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node fuse",
+    "start:electron:watch": "nodemon --watch 'dist/main/*.*' --exec 'electron ./dist/main/main.js'",
     "build": "export NODE_ENV=production && node fuse dist",
     "prod": "export NODE_ENV=production && npm run build && electron .",
     "packager": "npm run build && node ./package.js",
@@ -79,11 +80,13 @@
     "express": "^4.15.3",
     "fuse-box": "^2.2.2-beta.12",
     "node-sass": "^4.5.2",
+    "nodemon": "^1.12.0",
     "typescript": "^2.4.2",
     "uglify-js": "^3.0.27"
   },
   "dependencies": {
     "electron-log": "^2.2.9",
+    "electron-settings": "^3.1.1",
     "electron-updater": "^2.8.9"
   }
 }
