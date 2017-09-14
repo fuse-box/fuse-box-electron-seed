@@ -6,7 +6,8 @@ const fs = require('fs');
 const url = require('url');
 const isDevElectron = require('electron-is-dev'); // is dev electron (run from builded version)
 const electron = require('electron'); // Module to control application life.
-
+import * as logger from './logger'
+import * as windowBounds from './windowBounds'
 // const autoUpdater = require('./autoUpdater') // comming soon
 
 const app = electron.app; // Module to create native browser window.
@@ -24,11 +25,14 @@ function createWindow() {
 
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        ...windowBounds.get(),
         icon: path.join(__dirname, 'resources', 'icon.png')
-    })
-    
+    });
+
+    logger.init(mainWindow);
+    windowBounds.init(mainWindow);
+
+
     if(dev) {
         mainWindow.loadURL('http://localhost:4444');
         
@@ -36,7 +40,7 @@ function createWindow() {
         mainWindow.webContents.openDevTools();
     } else {
         mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'dist', 'static', `index.html`),
+            pathname: path.join(app.getAppPath(), 'dist', 'renderer', `index.html`),
             protocol: 'file:',
             slashes: true
         }));
