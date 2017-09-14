@@ -8,13 +8,14 @@
   },
   "version": "1.0.5",
   "description": "Electron application boilerplate based on typescript fusebox with hot reloading",
-  "main": "dist/renderer/main.js",
+  "main": "dist/main/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node fuse",
-    "start:electron:watch": "nodemon --watch 'dist/main/*.*' --exec 'electron ./dist/main/main.js'",
+    "start:electron": "electron .",
+    "start:electron:watch": "nodemon --watch 'dist/main/*.*' --exec 'electron .'",
     "build": "export NODE_ENV=production && node fuse dist",
-    "prod": "export NODE_ENV=production && npm run build && electron .",
+    "prod": "export NODE_ENV=production && npm run build && npm run start:electron",
     "packager": "npm run build && node ./package.js",
     "package": "npm run build && build --publish never",
     "pack-and-publish": "npm run build && build --publish always",
@@ -28,10 +29,8 @@
     "asar": false,
     "files": [
       "dist/",
-      "src/",
       "node_modules/",
       "resources/",
-      "electron.js",
       "package.json"
     ],
     "dmg": {
@@ -66,7 +65,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kfiku/fuse-box-electron-seed.git"
+    "url": "git+https://github.com/fuse-box/fuse-box-electron-seed.git"
   },
   "license": "ISC",
   "bugs": {
