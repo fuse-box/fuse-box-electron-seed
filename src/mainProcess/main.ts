@@ -32,17 +32,14 @@ function createWindow() {
         height: 600,
         icon: path.join(__dirname, 'resources', 'icon.png')
     })
-    // console.log(app.getVersion());
-    if(dev) {
-        mainWindow.loadURL(`http://localhost:4444?version=${version}`);
-        // and load the index.html of the app.
     
+    if(dev) {
+        mainWindow.loadURL('http://localhost:4444');
+        
         // Open the DevTools.
         mainWindow.webContents.openDevTools();
     } else {
         mainWindow.loadURL(url.format({
-            // pathname: path.join(__dirname, 'static', `index.html?version=${version}`),
-            // pathname: path.join(__dirname, 'dist', 'static', `index.html?version=${version}`),
             pathname: path.join(__dirname, 'dist', 'static', `index.html`),
             protocol: 'file:',
             slashes: true
@@ -68,9 +65,9 @@ app.on('ready', createWindow);
 app.on('window-all-closed', function() {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
-    // if (process.platform !== 'darwin') {
+    if (process.platform !== 'darwin') {
         app.quit()
-    // }
+    }
 });
 
 app.on('activate', function() {
