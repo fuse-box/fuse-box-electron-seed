@@ -20,7 +20,6 @@ export function get () {
 function saveWindowBounds () {
     clearTimeout(ti);
     ti = setTimeout(() => {
-        console.log('saving', win.getBounds());
         settings.set('window', win.getBounds());
     }, 1000);
 }
