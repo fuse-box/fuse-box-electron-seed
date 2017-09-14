@@ -33,7 +33,7 @@ Sparky.task("build:renderer", () => {
                 path: production ? "." : "/renderer/"
             }),
             production && QuantumPlugin({
-                bakeApiIntoBundle : 'dist',
+                bakeApiIntoBundle : 'renderer',
                 target : 'electron',
                 treeshake: true,
                 removeExportsInterop: false,
@@ -54,7 +54,7 @@ Sparky.task("build:renderer", () => {
         })
     }
 
-    const app = fuse.bundle("dist")
+    const app = fuse.bundle("renderer")
         .instructions('> [index.ts] + fuse-box-css')
 
     if (!production) { 
@@ -74,13 +74,13 @@ Sparky.task("build:main", () => {
     const fuse = FuseBox.init({
         homeDir: "src",
         output: "dist/main/$name.js",
-        hash: production,
         target: "server",
         experimentalFeatures: true,
         cache: !production,
         plugins: [
             EnvPlugin({ NODE_ENV: production ? "production" : "development" }),
             production && QuantumPlugin({
+                bakeApiIntoBundle : 'main',
                 target : 'server',
                 treeshake: true,
                 removeExportsInterop: false,
@@ -123,4 +123,4 @@ Sparky.task("clean-cache", () => Sparky.src(".fusebox/*").clean(".fusebox/"));
 
 // prod build
 Sparky.task("set-production-env", () => production = true);
-Sparky.task("dist", ["clean:dist", "clean-cache", "set-production-env", "build:renderer"], () => {})
+Sparky.task("dist", ["clean:dist", "clean-cache", "set-production-env", "build:main", "build:renderer"], () => {})
