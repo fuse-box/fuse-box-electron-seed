@@ -24,8 +24,10 @@
   "build": {
     "productName": "ElectronReact",
     "appId": "org.develar.ElectronReact",
+    "asar": false,
     "files": [
       "dist/",
+      "src/",
       "node_modules/",
       "resources/",
       "electron.js",
