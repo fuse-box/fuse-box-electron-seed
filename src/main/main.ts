@@ -20,7 +20,7 @@ let mainWindow;
 
 function createWindow() {
     if (!isDevElectron) {
-        // autoUpdater.checkForUpdates();
+        // autoUpdater.checkForUpdates(); // comming soon
     }
 
     // Create the browser window.
