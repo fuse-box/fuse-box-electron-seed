@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "indent": [true, "spaces", 2],
+    "no-unused-expression": true,
+    "no-duplicate-variable": true,
+    "no-unused-variable": true,
+    "no-consecutive-blank-lines": [true],
+    "curly": true,
+    "class-name": true,
+    "semicolon": true,
+    "triple-equals": true
+  }
+}

@@ -1,30 +1,91 @@
 {
-    "name": "fuse-box-electron-seed",
-    "version": "1.0.0",
-    "description": "",
-    "main": "electron.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node fuse",
-        "dist": "export NODE_ENV=production && node fuse dist",
-        "prod": "export NODE_ENV=production && npm run dist && electron ."
+  "name": "fuse-box-electron-seed",
+  "productName": "fuse-box-electron-example-app",
+  "author": {
+    "name": "FuseBoxDevs",
+    "email": "fuse@example.com",
+    "url": "https://github.com/fuse-box"
+  },
+  "version": "1.0.5",
+  "description": "Electron application boilerplate based on typescript fusebox with hot reloading",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node fuse",
+    "start:electron": "electron .",
+    "start:electron:watch": "nodemon --watch 'dist/main/*.*' --exec 'electron .'",
+    "build": "npm run lint && export NODE_ENV=production && node fuse dist",
+    "lint": "tslint --project tslint.json",
+    "prod": "export NODE_ENV=production && npm run build && npm run start:electron",
+    "packager": "npm run build && node ./package.js",
+    "package": "npm run build && build --publish never",
+    "pack-and-publish": "npm run build && build --publish always",
+    "package-all": "npm run build && build -mwl",
+    "package-linux": "npm run build && build --linux",
+    "package-win": "npm run build && build --win --x64"
+  },
+  "build": {
+    "productName": "ElectronReact",
+    "appId": "org.develar.ElectronReact",
+    "files": [
+      "dist/",
+      "node_modules/",
+      "resources/",
+      "package.json"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/fuse-box/fuse-box-electron-seed.git"
+    "win": {
+      "target": [
+        "nsis"
+      ]
     },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/fuse-box/fuse-box-electron-seed/issues"
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ]
     },
-    "homepage": "https://github.com/fuse-box/fuse-box-electron-seed#readme",
-    "devDependencies": {
-        "electron": "^1.7.5",
-        "express": "^4.15.3",
-        "fuse-box": "^2.2.2-beta.12",
-        "node-sass": "^4.5.2",
-        "typescript": "^2.4.2",
-        "uglify-js": "^3.0.27"
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fuse-box/fuse-box-electron-seed.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fuse-box/fuse-box-electron-seed/issues"
+  },
+  "homepage": "https://github.com/fuse-box/fuse-box-electron-seed#readme",
+  "devDependencies": {
+    "electron": "^1.7.6",
+    "electron-builder": "^19.27.7",
+    "express": "^4.15.4",
+    "fuse-box": "^2.2.31",
+    "node-sass": "^4.5.3",
+    "nodemon": "^1.12.1",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.2",
+    "uglify-js": "^3.0.27"
+  },
+  "dependencies": {
+    "electron-log": "^2.2.9",
+    "electron-settings": "^3.1.1",
+    "electron-updater": "^2.8.9"
+  }
 }

@@ -16,10 +16,10 @@ const {spawn} = require("child_process");
 let producer;
 let production = false;
 
-Sparky.task("build", () => {
+Sparky.task("build:renderer", () => {
     const fuse = FuseBox.init({
-        homeDir: "src",
-        output: "dist/static/$name.js",
+        homeDir: "src/renderer",
+        output: "dist/renderer/$name.js",
         hash: production,
         target: "electron",
         experimentalFeatures: true,
@@ -29,11 +29,11 @@ Sparky.task("build", () => {
             [SassPlugin(), CSSPlugin()],
             WebIndexPlugin({
                 title: "FuseBox electron demo",
-                template: "src/index.html",
-                path: production ? "." : "/static/"
+                template: "src/renderer/index.html",
+                path: production ? "." : "/renderer/"
             }),
             production && QuantumPlugin({
-                bakeApiIntoBundle : 'app',
+                bakeApiIntoBundle : 'renderer',
                 target : 'electron',
                 treeshake: true,
                 removeExportsInterop: false,
@@ -47,36 +47,74 @@ Sparky.task("build", () => {
         fuse.dev({ root: false }, server => {
             const dist = path.join(__dirname, "dist");
             const app = server.httpServer.app;
-            app.use("/static/", express.static(path.join(dist, 'static')));
+            app.use("/renderer/", express.static(path.join(dist, 'renderer')));
             app.get("*", function(req, res) {
-                res.sendFile(path.join(dist, "static/index.html"));
+                res.sendFile(path.join(dist, "renderer/index.html"));
             });
         })
     }
 
-    const app = fuse.bundle("app")
+    const app = fuse.bundle("renderer")
         .instructions('> [index.ts] + fuse-box-css')
 
     if (!production) { 
         app.hmr().watch()
-
-        return fuse.run().then(() => {
-            // launch electron the app
-            spawn('node', [`${ __dirname }/node_modules/electron/cli.js`,  __dirname ]);
-        });
     }
 
     return fuse.run()
 });
 
+Sparky.task("build:main", () => {
+    const fuse = FuseBox.init({
+        homeDir: "src/main",
+        output: "dist/main/$name.js",
+        target: "server",
+        experimentalFeatures: true,
+        cache: !production,
+        plugins: [
+            EnvPlugin({ NODE_ENV: production ? "production" : "development" }),
+            production && QuantumPlugin({
+                bakeApiIntoBundle : 'main',
+                target : 'server',
+                treeshake: true,
+                removeExportsInterop: false,
+                uglify: true
+            })
+        ]
+    });
+
+    const app = fuse.bundle("main")
+        .instructions('> [main.ts]')
+
+    if (!production) {
+        app.watch()
+
+        return fuse.run().then(() => {
+            // launch electron the app
+            const child = spawn('npm', [ 'run', 'start:electron:watch' ]);
+            child.stdout.on('data', function(data) {
+                console.log(data.toString());
+                //Here is where the output goes
+            });
+            child.stderr.on('data', function(data) {
+                console.error(data.toString());
+                //Here is where the error output goes
+            });
+        });
+    }
+
+    return fuse.run()
+});
+ 
+
 // main task
-Sparky.task("default", ["clean", "build"], () => {});
+Sparky.task("default", ["clean:dist", "clean:cache", "build:renderer", "build:main"], () => {});
 
 // wipe it all
-Sparky.task("clean", () => Sparky.src("dist/*").clean("dist/"));
+Sparky.task("clean:dist", () => Sparky.src("dist/*").clean("dist/"));
 // wipe it all from .fusebox - cache dir
-Sparky.task("clean-cache", () => Sparky.src(".fusebox/*").clean(".fusebox/"));
+Sparky.task("clean:cache", () => Sparky.src(".fusebox/*").clean(".fusebox/"));
 
 // prod build
 Sparky.task("set-production-env", () => production = true);
-Sparky.task("dist", ["clean", "clean-cache", "set-production-env", "build"], () => {})
+Sparky.task("dist", ["clean:dist", "clean:cache", "set-production-env", "build:main", "build:renderer"], () => {})
