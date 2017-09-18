@@ -35,8 +35,20 @@ npm run dist
 npm run prod
 ```
 
+### Package app with electron-packager
+tested  on MacOS
+```
+npm run package
+```
+
+### Package and publish to github app with electron-packager
+
+```
+export GH_TOKEN=YOUR_TOKEN && npm run pack-and-publish
+```
+more info: [here](https://www.electron.build/publishing-artifacts)
 
 ## TODO
 
-* add some UI framework
+* add some UI framework/s
 * add test examples
