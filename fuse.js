@@ -18,7 +18,7 @@ let production = false;
 
 Sparky.task("build:renderer", () => {
     const fuse = FuseBox.init({
-        homeDir: "src",
+        homeDir: "src/renderer",
         output: "dist/renderer/$name.js",
         hash: production,
         target: "electron",
@@ -29,7 +29,7 @@ Sparky.task("build:renderer", () => {
             [SassPlugin(), CSSPlugin()],
             WebIndexPlugin({
                 title: "FuseBox electron demo",
-                template: "src/index.html",
+                template: "src/renderer/index.html",
                 path: production ? "." : "/renderer/"
             }),
             production && QuantumPlugin({
@@ -59,12 +59,6 @@ Sparky.task("build:renderer", () => {
 
     if (!production) { 
         app.hmr().watch()
-
-        // return fuse.run()
-        // .then(() => {
-        //     // launch electron the app
-        //     spawn('node', [`${ __dirname }/node_modules/electron/cli.js`,  __dirname ]);
-        // });
     }
 
     return fuse.run()
@@ -72,7 +66,7 @@ Sparky.task("build:renderer", () => {
 
 Sparky.task("build:main", () => {
     const fuse = FuseBox.init({
-        homeDir: "src",
+        homeDir: "src/main",
         output: "dist/main/$name.js",
         target: "server",
         experimentalFeatures: true,
@@ -90,7 +84,7 @@ Sparky.task("build:main", () => {
     });
 
     const app = fuse.bundle("main")
-        .instructions('> [main/main.ts]')
+        .instructions('> [main.ts]')
 
     if (!production) {
         app.watch()
@@ -114,13 +108,13 @@ Sparky.task("build:main", () => {
  
 
 // main task
-Sparky.task("default", ["clean:dist", "build:renderer", "build:main"], () => {});
+Sparky.task("default", ["clean:dist", "clean:cache", "build:renderer", "build:main"], () => {});
 
 // wipe it all
 Sparky.task("clean:dist", () => Sparky.src("dist/*").clean("dist/"));
 // wipe it all from .fusebox - cache dir
-Sparky.task("clean-cache", () => Sparky.src(".fusebox/*").clean(".fusebox/"));
+Sparky.task("clean:cache", () => Sparky.src(".fusebox/*").clean(".fusebox/"));
 
 // prod build
 Sparky.task("set-production-env", () => production = true);
-Sparky.task("dist", ["clean:dist", "clean-cache", "set-production-env", "build:main", "build:renderer"], () => {})
+Sparky.task("dist", ["clean:dist", "clean:cache", "set-production-env", "build:main", "build:renderer"], () => {})
