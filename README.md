@@ -36,7 +36,7 @@ npm run prod
 ```
 
 ### Package app with electron-packager
-tested  on MacOS
+tested on MacOS, linux Ubuntu, Windows 7
 ```
 npm run package
 ```
