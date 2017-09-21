@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node fuse",
     "start:electron": "electron .",
-    "start:electron:watch": "nodemon --watch 'dist/main/*.*' --exec 'electron .'",
+    "start:electron:watch": "nodemon --watch 'dist/main/*.*' --exec npm run start:electron",
     "build": "npm run lint && export NODE_ENV=production && node fuse dist",
     "lint": "tslint --project tslint.json",
     "prod": "export NODE_ENV=production && npm run build && npm run start:electron",

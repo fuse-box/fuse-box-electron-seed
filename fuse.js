@@ -57,7 +57,7 @@ Sparky.task("build:renderer", () => {
     const app = fuse.bundle("renderer")
         .instructions('> [index.ts] + fuse-box-css')
 
-    if (!production) { 
+    if (!production) {
         app.hmr().watch()
     }
 
@@ -91,7 +91,7 @@ Sparky.task("build:main", () => {
 
         return fuse.run().then(() => {
             // launch electron the app
-            const child = spawn('npm', [ 'run', 'start:electron:watch' ]);
+            const child = spawn('npm', [ 'run', 'start:electron:watch' ], { shell:true, stdio: 'inherit'});
             child.stdout.on('data', function(data) {
                 console.log(data.toString());
                 //Here is where the output goes
@@ -105,7 +105,7 @@ Sparky.task("build:main", () => {
 
     return fuse.run()
 });
- 
+
 
 // main task
 Sparky.task("default", ["clean:dist", "clean:cache", "build:renderer", "build:main"], () => {});
