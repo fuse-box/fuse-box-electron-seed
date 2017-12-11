@@ -13,7 +13,7 @@ What's inside:
 * Auto saving app boudries (x, y width, height) with electron-settings
 
 
-## Ussage
+## Usage
 
 ### Run development version
 
