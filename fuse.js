@@ -22,7 +22,6 @@ Sparky.task("build:renderer", () => {
         output: "dist/renderer/$name.js",
         hash: production,
         target: "electron",
-        experimentalFeatures: true,
         cache: !production,
         plugins: [
             EnvPlugin({ NODE_ENV: production ? "production" : "development" }),
@@ -69,7 +68,6 @@ Sparky.task("build:main", () => {
         homeDir: "src/main",
         output: "dist/main/$name.js",
         target: "server",
-        experimentalFeatures: true,
         cache: !production,
         plugins: [
             EnvPlugin({ NODE_ENV: production ? "production" : "development" }),
