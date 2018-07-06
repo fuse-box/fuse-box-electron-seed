@@ -4,7 +4,6 @@ const {
     CSSPlugin,
     WebIndexPlugin,
     Sparky,
-    UglifyJSPlugin,
     QuantumPlugin,
     EnvPlugin
 } = require("fuse-box");
@@ -13,7 +12,6 @@ const express = require("express");
 const path = require("path");
 const {spawn} = require("child_process");
 
-let producer;
 let production = false;
 
 Sparky.task("build:renderer", () => {
@@ -23,6 +21,7 @@ Sparky.task("build:renderer", () => {
         hash: production,
         target: "electron",
         cache: !production,
+        sourceMaps: !production,
         plugins: [
             EnvPlugin({ NODE_ENV: production ? "production" : "development" }),
             [SassPlugin(), CSSPlugin()],
