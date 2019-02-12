@@ -88,15 +88,15 @@ Sparky.task("build:main", () => {
 
         return fuse.run().then(() => {
             // launch electron the app
-            const child = spawn('npm', [ 'run', 'start:electron:watch' ], { shell:true, stdio: 'inherit'});
-            // child.stdout.on('data', function(data) {
-            //     console.log(data.toString());
-            //     //Here is where the output goes
-            // });
-            // child.stderr.on('data', function(data) {
-            //     console.error(data.toString());
-            //     //Here is where the error output goes
-            // });
+            const child = spawn('npm', [ 'run', 'start:electron:watch' ], { shell:true, stdio: 'pipe'});
+            child.stdout.on('data', function(data) {
+                console.log(data.toString());
+                //Here is where the output goes
+            });
+            child.stderr.on('data', function(data) {
+                console.error(data.toString());
+                //Here is where the error output goes
+            });
         });
     }
 

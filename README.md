@@ -10,7 +10,7 @@ What's inside:
 * Livereload of main process
 * Sass (grouping into 1 file)
 * Base build process with electron-builder
-* Auto saving app boudries (x, y width, height) with electron-settings
+* Auto saving app boundaries (x, y width, height) with electron-settings
 
 
 ## Usage
