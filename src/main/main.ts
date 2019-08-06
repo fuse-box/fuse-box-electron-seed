@@ -3,7 +3,7 @@ const dev = env === 'development';
 
 const path = require('path');
 const url = require('url');
-const isDevElectron = require('electron-is-dev'); // is dev electron (run from builded version)
+const isDevElectron = true;
 const electron = require('electron'); // Module to control application life.
 import * as logger from './logger';
 import * as windowBounds from './windowBounds';
@@ -24,25 +24,31 @@ function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     ...windowBounds.get(),
-    icon: path.join(__dirname, 'resources', 'icon.png')
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    icon: path.join(__dirname, 'resources', 'icon.png'),
   });
 
   logger.init(mainWindow);
   windowBounds.init(mainWindow);
 
-  if(dev) {
-    mainWindow.loadURL('http://localhost:4444');
+  // if (dev) {
+  //   mainWindow.loadURL('http://localhost:4444');
 
-    // Open the DevTools.
-    mainWindow.webContents.openDevTools();
-  } else {
-    mainWindow.loadURL(url.format({
-      pathname: path.join(app.getAppPath(), 'dist', 'renderer', `index.html`),
+  //   // Open the DevTools.
+  //   mainWindow.webContents.openDevTools();
+  // } else {
+
+  mainWindow.loadURL(
+    url.format({
+      pathname: path.join(app.getAppPath(), '../', 'renderer', `index.html`),
       protocol: 'file:',
-      slashes: true
-    }));
-    // mainWindow.webContents.openDevTools();
-  }
+      slashes: true,
+    }),
+  );
+  // mainWindow.webContents.openDevTools();
+  //}
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
